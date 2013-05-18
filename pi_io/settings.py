@@ -4,6 +4,8 @@ import os
 import sys
 sys.path.append(os.getcwd())
 
+GRAPPELLI_ADMIN_TITLE = "PiIO"
+
 DEBUG = True
 TEMPLATE_DEBUG = DEBUG
 
@@ -111,6 +113,7 @@ ROOT_URLCONF = 'pi_io.urls'
 WSGI_APPLICATION = 'pi_io.wsgi.application'
 
 TEMPLATE_DIRS = (
+    os.path.join(PROJECT_ROOT, "templates"),
     # Put strings here, like "/home/html/django_templates" or "C:/www/django/templates".
     # Always use forward slashes, even on Windows.
     # Don't forget to use absolute paths, not relative paths.
@@ -125,6 +128,7 @@ CACHES = {
 
 
 INSTALLED_APPS = (
+    'grappelli',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
@@ -184,6 +188,6 @@ LOGGING = {
 
 
 WS_SERVER_IP = 'vm-linux'
-WS_SERVER_HTTP = 8090
+WS_HTTP_PORT = 8090
 WS_PORT = 9000
-WS_SERVER_HTTP_SSL = False
+WS_HTTP_SSL = False

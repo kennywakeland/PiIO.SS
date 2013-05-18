@@ -81,6 +81,18 @@ Interface.prototype.getAjaxMenu = function() {
     });
 };
 
+Interface.prototype.getWSinfo = function() {
+    var self = this;
+    $.ajax({
+      type: "GET",
+      url: "/user_api/ws_info/",
+      data: {},
+      async: false,
+      dataType: "json",
+      success: function(data) { self.ws_info = data; }
+    });
+};
+
 Interface.prototype.getAjaxDisplays = function(rpi_mac, callback) {
     var self = this;
     $.get('/displays/' + encodeURIComponent(rpi_mac),
