@@ -38,12 +38,12 @@ def push_config(rpi):
     post_data = {'json': json.dumps(requirements)}
     post_data = urllib.urlencode(post_data)
 
-    if settings.WS_SERVER_HTTP_SSL:
+    if settings.WS_HTTP_SSL:
         proto = 'https'
     else:
         proto = 'http'
 
-    post_addr = '%s://%s:%d' % (proto, settings.WS_SERVER_IP, settings.WS_SERVER_HTTP)
+    post_addr = '%s://%s:%d' % (proto, settings.WS_SERVER_IP, settings.WS_HTTP_PORT)
 
     try:
         url = urllib2.Request(post_addr, post_data)
