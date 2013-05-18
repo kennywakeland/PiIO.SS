@@ -1,5 +1,9 @@
 # Django settings for rpi_ws project.
 
+import os
+import sys
+sys.path.append(os.getcwd())
+
 DEBUG = True
 TEMPLATE_DEBUG = DEBUG
 
@@ -24,7 +28,7 @@ DATABASES = {
 # http://en.wikipedia.org/wiki/List_of_tz_zones_by_name
 # although not all choices may be available on all operating systems.
 # In a Windows environment this must be set to your system time zone.
-TIME_ZONE = 'America/Chicago'
+TIME_ZONE = 'America/Los_Angeles'
 
 # Language code for this installation. All choices can be found here:
 # http://www.i18nguy.com/unicode/language-identifiers.html
@@ -43,24 +47,27 @@ USE_L10N = True
 # If you set this to False, Django will not use timezone-aware datetimes.
 USE_TZ = True
 
-# Absolute filesystem path to the directory that will hold user-uploaded files.
-# Example: "/home/media/media.lawrence.com/media/"
-MEDIA_ROOT = '/Users/bubsterboo/PycharmProjects/pi_io/www/media/'
+# Full filesystem path to the project.
+PROJECT_ROOT = os.path.dirname(os.path.abspath(__file__)).replace("\\","/")
 
 # URL that handles the media served from MEDIA_ROOT. Make sure to use a
 # trailing slash.
 # Examples: "http://media.lawrence.com/media/", "http://example.com/media/"
 MEDIA_URL = '/media/'
 
-# Absolute path to the directory static files should be collected to.
-# Don't put anything in this directory yourself; store your static files
-# in apps' "static/" subdirectories and in STATICFILES_DIRS.
-# Example: "/home/media/media.lawrence.com/static/"
-STATIC_ROOT = '/Users/bubsterboo/PycharmProjects/pi_io/www/static/'
+# Absolute filesystem path to the directory that will hold user-uploaded files.
+# Example: "/home/media/media.lawrence.com/media/"
+MEDIA_ROOT = os.path.join(PROJECT_ROOT, MEDIA_URL.lstrip("/")).replace("\\","/")
 
 # URL prefix for static files.
 # Example: "http://media.lawrence.com/static/"
 STATIC_URL = '/static/'
+
+# Absolute path to the directory static files should be collected to.
+# Don't put anything in this directory yourself; store your static files
+# in apps' "static/" subdirectories and in STATICFILES_DIRS.
+# Example: "/home/media/media.lawrence.com/static/"
+STATIC_ROOT = os.path.join(PROJECT_ROOT, STATIC_URL.lstrip("/")).replace("\\","/")
 
 # Additional locations of static files
 STATICFILES_DIRS = (
@@ -79,7 +86,7 @@ STATICFILES_FINDERS = (
 )
 
 # Make this unique, and don't share it with anybody.
-SECRET_KEY = '%#8!c=oxz71j63t82+m(p^w)dyne(i)ky7a+97un!3i91#qs6*'
+SECRET_KEY = '%#8!c=_xz71j63t82+m(p^+)dyne(iqky7a-97un!3i91#qs~*'
 
 # List of callables that know how to import templates from various sources.
 TEMPLATE_LOADERS = (

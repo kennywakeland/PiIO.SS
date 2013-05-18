@@ -1,10 +1,11 @@
+import json
+
 from django.http import HttpResponse, HttpResponseBadRequest
 from django.views.decorators.csrf import csrf_exempt
+
 from pi_io_site.models import *
 from ws_comm.client import push_config
-import urllib2
-import urllib
-import json
+
 
 @csrf_exempt
 def register(request):
@@ -22,9 +23,10 @@ def register(request):
             return HttpResponseBadRequest('Does not have required fields', mimetype='application/json')
 
         # update rpi model
-        rpi_db, created = RaspberryPi.objects.get_or_create(mac_address=jreq['mac'], defaults={'current_ip':jreq['ip'],
-                                                                        'name':'%s - %s' % (jreq['mac'], jreq['ip'])})
-
+        rpi_db, created = RaspberryPi.objects.get_or_create(mac_address=jreq['mac'], defaults={'current_ip': jreq['ip'],
+                                                                                               'name': '%s - %s' % (
+                                                                                               jreq['mac'],
+                                                                                               jreq['ip'])})
 
         rpi_db.current_ip = jreq['ip']
         rpi_db.online = True
@@ -34,7 +36,7 @@ def register(request):
             if index_name in jreq['iface']:
                 for iface in jreq['iface'][index_name]:
                     iface_db, created = model_cls.objects.get_or_create(rpi=rpi_db, name=iface['name'],
-                        defaults={'io_type':iface['io_type']})
+                                                                        defaults={'io_type': iface['io_type']})
 
                     iface_db.description = iface['desc']
                     iface_db.possible_choices = json.dumps(iface['choices'])
@@ -47,8 +49,8 @@ def register(request):
         # send configs to the RPI
         push_config(rpi_db)
 
-
     return HttpResponse('ok', mimetype='application/json')
+
 
 @csrf_exempt
 def disconnect(request):

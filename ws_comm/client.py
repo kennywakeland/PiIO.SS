@@ -1,11 +1,13 @@
+import urllib2
+import urllib
+import json
+
 from pi_io_site.models import *
 from pi_io import settings
-import urllib2, urllib
-import json
+
 
 read_display_cls = ReadDisplay.__subclasses__()
 write_display_cls = WriteDisplay.__subclasses__()
-
 
 
 def push_config(rpi):
@@ -22,9 +24,9 @@ def push_config(rpi):
         rpi_requirements[type] = []
         for display in displays:
             display_configs = {
-                'cls_name':display.interface.name,
-                'ch_port':display.channel_port,
-                'equation':display.equation
+                'cls_name': display.interface.name,
+                'ch_port': display.channel_port,
+                'equation': display.equation
             }
             rpi_requirements[type].append(display_configs)
 
@@ -33,7 +35,7 @@ def push_config(rpi):
 
     requirements = [rpi_requirements]
 
-    post_data = {'json':json.dumps(requirements)}
+    post_data = {'json': json.dumps(requirements)}
     post_data = urllib.urlencode(post_data)
 
     if settings.WS_SERVER_HTTP_SSL:
@@ -53,7 +55,6 @@ def push_config(rpi):
         pass
 
     return False
-
 
 
 def config_changed_signal(sender, **kwargs):

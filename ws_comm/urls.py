@@ -1,7 +1,7 @@
-from django.conf.urls import patterns, include, url
+from django.conf.urls import patterns, url
 
 urlpatterns = patterns('',
-    url(r'^register/$', 'ws_comm.views.register'),
-    url(r'^disconnect/$', 'ws_comm.views.disconnect'),
+                       url(r'^register/$', 'ws_comm.views.register'),
+                       url(r'^disconnect/$', 'ws_comm.views.disconnect'),
 )
 
