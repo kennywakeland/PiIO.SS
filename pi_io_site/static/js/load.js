@@ -2,7 +2,17 @@ var client;
 
 $(document).ready(function() {
     interface.getAjaxMenu();
-    client = new WSClient('ws://' + window.location.hostname + ':9000/', false);
+
+    $.ajax({
+      type: "GET",
+      url: "/user_api/ws_info/",
+      data: {},
+      async: false,
+      dataType: "json",
+      success: function(data) { interface.ws_info = data; }
+  });
+
+    client = new WSClient('ws://' +interface.ws_info.ws_server + ':'+interface.ws_info.ws_port +'/', false);
     // the interface needs to be aware of the ws client to delegate data write requests
     interface.wsclient = client;
 

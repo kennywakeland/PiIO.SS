@@ -1,0 +1,4 @@
+pip install  Twisted
+pip install autobahn
+pip install zope.interface
+pip install wsaccel
