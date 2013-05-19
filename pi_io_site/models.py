@@ -52,14 +52,15 @@ class RPIWriteInterface(RaspberryPiInterface):
 
 class Display(models.Model):
     # channel or port
-    channel_port = models.IntegerField()
+    #channel_port = models.IntegerField()
+    channel_port = models.CharField(max_length=100, )
     rpi = models.ForeignKey(RaspberryPi)
     equation = models.CharField(max_length=100, blank=True)
 
     label = models.CharField(max_length=200, blank=True)
 
     def __unicode__(self):
-        return '%s - %d' % (self.__class__.__name__, self.channel_port)
+        return '%s - %s' % (self.__class__.__name__, self.channel_port)
 
     class Meta:
         abstract = True

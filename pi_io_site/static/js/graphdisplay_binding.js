@@ -4,7 +4,7 @@ function graphdisplay(id, key, wsclient) {
     this.domobj = $('#' + id + ' > div');
     this.data_counter = 0;
     // buffer stored in ms
-    this.time_len = 10000;
+    this.time_len = 100000;
     this.update_interval = 40;
     this.data = [];
     this.data_len = parseInt(this.time_len / this.update_interval);
@@ -26,9 +26,8 @@ function graphdisplay(id, key, wsclient) {
     this.plot = $.plot(this.domobj, [], options);
 }
 
-graphdisplay.prototype.timer = function() {
-    if (this.stop_timer)
-    {
+graphdisplay.prototype.timer = function () {
+    if (this.stop_timer) {
         clearInterval(this.interval);
         return;
     }
@@ -44,20 +43,20 @@ graphdisplay.prototype.timer = function() {
     this.plot.draw();
 };
 
-graphdisplay.prototype.update = function(value) {
+graphdisplay.prototype.update = function (value) {
     this.last_data_point = value;
     var self = this;
 
     if (this.no_data) {
         this.no_data = false;
         this.timer();
-        this.interval = setInterval(function(){
+        this.interval = setInterval(function () {
             self.timer();
         }, this.update_interval);
     }
 };
 
-graphdisplay.prototype.close = function() {
+graphdisplay.prototype.close = function () {
     // this doesn't seem to work...
     // function is called but Flot later throws an exception
     this.stop_timer = true;

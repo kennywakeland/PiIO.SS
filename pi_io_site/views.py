@@ -45,7 +45,7 @@ def rpi_displays(request, rpi_mac):
     data_bindings_json = {}
     for display in read_and_write_displays:
         for instance in display['instances']:
-            key = 'cls:%s, port:%d, eq:%s' % (instance['db'].interface.name,
+            key = 'cls:%s, port:%s, eq:%s' % (instance['db'].interface.name,
                                               instance['db'].channel_port,
                                               instance['db'].equation)
             if key not in data_bindings_json:
