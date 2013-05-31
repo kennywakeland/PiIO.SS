@@ -13,17 +13,17 @@ def rpi_displays(request, rpi_mac):
     read_display_cls = ReadDisplay.__subclasses__()
     write_display_cls = WriteDisplay.__subclasses__()
 
-    rpi = RaspberryPi.objects.get(pk=rpi_mac)
+    rpi = RaspberryPi.objects.get(mac_address=rpi_mac)
 
-    rpi_read_ifaces = RPIReadInterface.objects.filter(rpi=rpi)
-    rpi_write_ifaces = RPIWriteInterface.objects.filter(rpi=rpi)
+    rpi_read_inter_faces = RPIReadInterface.objects.filter(rpi=rpi)
+    rpi_write_inter_faces = RPIWriteInterface.objects.filter(rpi=rpi)
 
     counter = 0
 
-    def get_display_instances(display_cls_lst, display_iface, counter):
+    def get_display_instances(display_cls_lst, display_inter_face, counter):
         lst_of_cls = []
         for display_cls in display_cls_lst:
-            db_instances = display_cls.objects.filter(interface__in=display_iface)
+            db_instances = display_cls.objects.filter(interface__in=display_inter_face)
             if db_instances.count() == 0:
                 continue
             modified_db_instances = []
@@ -31,11 +31,14 @@ def rpi_displays(request, rpi_mac):
                 counter += 1
                 modified_db_instances.append({'db': db_instance, 'id': create_id(counter)})
             lst_of_cls.append(
-                {'cls': display_cls, 'cls_name': display_cls.__name__, 'instances': modified_db_instances})
-        return (lst_of_cls, counter)
+                {'cls': display_cls,
+                 'cls_name': display_cls.__name__,
+                 'instances': modified_db_instances})
 
-    read_displays, counter = get_display_instances(read_display_cls, rpi_read_ifaces, counter)
-    write_displays, counter = get_display_instances(write_display_cls, rpi_write_ifaces, counter)
+        return lst_of_cls, counter
+
+    read_displays, counter = get_display_instances(read_display_cls, rpi_read_inter_faces, counter)
+    write_displays, counter = get_display_instances(write_display_cls, rpi_write_inter_faces, counter)
 
     read_and_write_displays = read_displays + write_displays
 

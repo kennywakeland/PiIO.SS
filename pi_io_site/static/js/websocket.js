@@ -148,7 +148,7 @@ WSClient.prototype.unregister_rpi = function() {
 WSClient.prototype.send_write_data = function(key, data) {
     msg = {
         'cmd':this.clientcmds.WRITE_DATA,
-        'iface_port':key,
+        'inter_face_port':key,
         'value':data
     };
     this.ws.send(JSON.stringify(msg));

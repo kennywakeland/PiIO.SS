@@ -10,13 +10,17 @@ class RaspberryPi(models.Model):
     name = models.CharField(max_length=200)
     # in format AA:BB:CC:DD:EE:FF
     # should be unique identifier for RPI
-    mac_address = models.CharField(max_length=17, primary_key=True)
+    #primary_key
+    mac_address = models.CharField(max_length=17, db_index=True)
     current_ip = models.IPAddressField()
     online = models.BooleanField(default=False)
 
     def __unicode__(self):
         return self.name
 
+    class Meta:
+        verbose_name = 'Raspberry Pi'
+        verbose_name_plural = 'Raspberry Pi'
 
 class RaspberryPiInterface(models.Model):
     # return type for reads, input for writes
@@ -53,11 +57,12 @@ class RPIWriteInterface(RaspberryPiInterface):
 class Display(models.Model):
     # channel or port
     #channel_port = models.IntegerField()
-    channel_port = models.CharField(max_length=100, )
-    rpi = models.ForeignKey(RaspberryPi)
+    channel_port = models.CharField(max_length=100)
     equation = models.CharField(max_length=100, blank=True)
-
     label = models.CharField(max_length=200, blank=True)
+
+    rpi = models.ForeignKey(RaspberryPi)
+
 
     def __unicode__(self):
         return '%s - %s' % (self.__class__.__name__, self.channel_port)

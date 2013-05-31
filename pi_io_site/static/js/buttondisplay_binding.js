@@ -20,6 +20,11 @@ buttondisplay.prototype.update = function(value) {
     var text = (value.calculated) ? 'On' : 'Off';
     this.domobj.text(text);
     this.current_value = value;
+    if(value.calculated){
+        this.button.addClass("btn-success");
+    }else{
+        this.button.removeClass("btn-success");
+    }
 };
 
 buttondisplay.prototype.click = function() {

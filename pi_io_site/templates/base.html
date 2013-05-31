@@ -28,7 +28,7 @@
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
             </a>
-            <a class="brand" href="../">Pi IO</a>
+            <a class="brand" href="{% url 'home' %}">Pi IO</a>
             <div class="nav-collapse" id="main-menu">
                 <ul class="nav" id="main-menu-left">
                     <li class="dropdown">
@@ -41,7 +41,7 @@
                     </li>
                 </ul>
                 <ul id="main-menu-right" class="nav pull-right">
-                    <li><a href="/admin">Admin</a></li>
+                    <li><a href="{% url 'admin:index' %}">Admin</a></li>
                 </ul>
             </div>
         </div>

@@ -11,14 +11,13 @@ write_display_cls = WriteDisplay.__subclasses__()
 
 
 def push_config(rpi):
-    rpi_read_ifaces = RPIReadInterface.objects.filter(rpi=rpi)
-    rpi_write_ifaces = RPIWriteInterface.objects.filter(rpi=rpi)
+    rpi_read_inter_faces = RPIReadInterface.objects.filter(rpi=rpi)
+    rpi_write_inter_faces = RPIWriteInterface.objects.filter(rpi=rpi)
 
-    read_displays = ReadDisplay.objects.filter(interface__in=rpi_read_ifaces)
-    write_displays = WriteDisplay.objects.filter(interface__in=rpi_write_ifaces)
+    read_displays = ReadDisplay.objects.filter(interface__in=rpi_read_inter_faces)
+    write_displays = WriteDisplay.objects.filter(interface__in=rpi_write_inter_faces)
 
-    rpi_requirements = {}
-    rpi_requirements['mac'] = rpi.mac_address
+    rpi_requirements = {'mac': rpi.mac_address}
 
     def add_req(displays, type):
         rpi_requirements[type] = []

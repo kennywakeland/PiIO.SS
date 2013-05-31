@@ -29,6 +29,7 @@ class DisplayFormSet(BaseInlineFormSet):
                 interfaces = [form.instance.interface]
             else:
                 interfaces = RPIWriteInterface.objects.filter(rpi=self.instance)
+
         choices = []
         for interface in interfaces:
             if interface.io_type not in self.model.io_type:
@@ -37,8 +38,10 @@ class DisplayFormSet(BaseInlineFormSet):
                 _choices = json.loads(interface.possible_choices)
             except:
                 continue
+
             for item in _choices:
-                choices.append((item['s'], interface.__unicode__() + ' ' + item['d']))
+                choices.append((item['s'], interface.__unicode__().replace("_", " ") + ' : ' + item['d']))
+
         form.fields['channel_port'].choices = choices
 
         # filter queryset
