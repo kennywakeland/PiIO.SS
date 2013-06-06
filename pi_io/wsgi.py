@@ -14,7 +14,7 @@ framework.
 
 """
 import os
-
+import wsgi_local_settings
 os.environ.setdefault("DJANGO_SETTINGS_MODULE", "pi_io.settings")
 
 # This application object is used by any WSGI server configured to use this

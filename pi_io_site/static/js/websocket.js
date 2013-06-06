@@ -33,9 +33,14 @@ function WSClient(url, debug) {
 
 WSClient.prototype.ws_onmessage = function(msg) {
     var parsedMsg = jQuery.parseJSON(msg.data);
+
+    $("#wakeland_debug").text(parsedMsg);
+    //console.log(parsedMsg);
+
     if (this.debug)
         console.log(parsedMsg);
 
+    var key,type,index;
     switch (parsedMsg.cmd) {
         case this.servercmds.RPI_STATE_CHANGE:
             // for now i don't care, just refresh menu
@@ -65,46 +70,55 @@ WSClient.prototype.ws_onmessage = function(msg) {
         case this.servercmds.WRITE_DATA:
             this.datamsgcount_ack++;
 
-            for (var key in parsedMsg.read) {
-                if ('data_bindings' in window && key in data_bindings) {
-
-                    for (var type in data_bindings[key]) {
-                        if (data_bindings[key][type].instances) {
-                            for (var index in data_bindings[key][type].instances) {
-                                data_bindings[key][type].instances[index].update(parsedMsg.read[key]);
-                            }
-                        }
-                    }
-                }
+            if('data_bindings' in window  ){
+                this.update_instance(parsedMsg.read,data_bindings);
+                this.update_instance(parsedMsg.write,data_bindings);
             }
-            // TODO: clean up duplicate code
-            for (var key in parsedMsg.write) {
-                if ('data_bindings' in window && key in data_bindings) {
 
-                    for (var type in data_bindings[key]) {
-                        if (data_bindings[key][type].instances) {
-                            for (var index in data_bindings[key][type].instances) {
-                                data_bindings[key][type].instances[index].update(parsedMsg.write[key]);
-                            }
-                        }
-                    }
-                }
-            }
 
             if (this.datamsgcount_ack >= 5) {
-                push_msg = {
-                    'cmd':this.clientcmds.ACK_DATA,
-                    'ack_count':this.datamsgcount_ack
-                };
-                this.ws.send(JSON.stringify(push_msg));
+                this.acknowledge();
                 this.datamsgcount_ack = 0;
             }
 
             break;
         default:
+            console.log("oo nno");
             break;
     }
 };
+
+WSClient.prototype.update_instance = function(update_date,bindings){
+    var port_key,type_key,index;
+    for (port_key in update_date) {
+        if (port_key in data_bindings) {
+
+            for (type_key in data_bindings[port_key]) {
+                if (data_bindings[port_key][type_key].instances) {
+                    for (index in data_bindings[port_key][type_key].instances) {
+                        data_bindings[port_key][type_key].instances[index].update(update_date[port_key]);
+                    }
+                }
+            }
+        }else{
+            alert(port_key);
+        }
+    }
+}
+
+WSClient.prototype.acknowledge = function(){
+    var push_msg = {
+        'cmd':this.clientcmds.ACK_DATA,
+        'ack_count':this.datamsgcount_ack
+    };
+
+    this.ws.send(JSON.stringify(push_msg));
+
+    console.log('WS acknowledge');
+    console.log(this.datamsgcount_ack);
+
+    this.datamsgcount_ack = 0;
+}
 
 WSClient.prototype.ws_onopen = function() {
     if (this.debug) {
@@ -129,7 +143,7 @@ WSClient.prototype.ws_onerror = function(error) {
 };
 
 WSClient.prototype.request_rpi_stream = function(rpi_mac) {
-    msg = {
+    var msg = {
         'cmd':this.clientcmds.CONNECT_RPI,
         'rpi_mac':rpi_mac
     };
@@ -146,10 +160,15 @@ WSClient.prototype.unregister_rpi = function() {
 };
 
 WSClient.prototype.send_write_data = function(key, data) {
-    msg = {
+    var msg = {
         'cmd':this.clientcmds.WRITE_DATA,
         'inter_face_port':key,
         'value':data
     };
+
+    console.log(msg);
+    if (this.debug) {
+        console.log(msg);
+    }
     this.ws.send(JSON.stringify(msg));
 };

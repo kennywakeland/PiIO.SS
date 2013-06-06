@@ -29,6 +29,7 @@ buttondisplay.prototype.update = function(value) {
 
 buttondisplay.prototype.click = function() {
     // send the opposite of the current value
-    if (this.wsclient)
+    if (this.wsclient){
         this.wsclient.send_write_data(this.key, !this.current_value.real);
+    }
 };

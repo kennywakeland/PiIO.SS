@@ -31,6 +31,7 @@
 	    'ADC, port:3, eq:whatever':{'id':'1', 'type_fnc':''},
     }
     {% endcomment %}
+    <div>  {{ data_bindings_json|safe }} </div>
     <script type="text/javascript">
         data_bindings = {{ data_bindings_json|safe }};
     </script>

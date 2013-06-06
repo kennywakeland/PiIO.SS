@@ -52,7 +52,7 @@ USE_L10N = True
 USE_TZ = True
 
 # Full filesystem path to the project.
-PROJECT_ROOT = os.path.dirname(os.path.abspath(__file__)).replace("\\","/")
+PROJECT_ROOT = os.path.dirname(os.path.abspath(__file__+"/../")).replace("\\","/")
 
 # URL that handles the media served from MEDIA_ROOT. Make sure to use a
 # trailing slash.
@@ -73,8 +73,11 @@ STATIC_URL = '/static/'
 # Example: "/home/media/media.lawrence.com/static/"
 STATIC_ROOT = os.path.join(PROJECT_ROOT, STATIC_URL.lstrip("/")).replace("\\","/")
 
+
+SETTINGS_ROOT_W  = os.path.dirname(os.path.abspath(__file__)).replace("\\","/")
 # Additional locations of static files
 STATICFILES_DIRS = (
+    #os.path.join(SETTINGS_ROOT_W, "static"),
     # Put strings here, like "/home/html/static" or "C:/www/django/static".
     # Always use forward slashes, even on Windows.
     # Don't forget to use absolute paths, not relative paths.
@@ -115,7 +118,7 @@ ROOT_URLCONF = 'pi_io.urls'
 WSGI_APPLICATION = 'pi_io.wsgi.application'
 
 TEMPLATE_DIRS = (
-    os.path.join(PROJECT_ROOT, "templates"),
+    os.path.join(SETTINGS_ROOT_W, "templates"),
     # Put strings here, like "/home/html/django_templates" or "C:/www/django/templates".
     # Always use forward slashes, even on Windows.
     # Don't forget to use absolute paths, not relative paths.
@@ -189,7 +192,7 @@ LOGGING = {
 }
 
 
-WS_SERVER_IP = 'vm-linux'
+WS_SERVER_IP = 'piio-ss.wakeland.net'
 WS_HTTP_PORT = 8090
 WS_PORT = 9000
 WS_HTTP_SSL = False

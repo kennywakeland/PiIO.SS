@@ -97,7 +97,7 @@ Interface.prototype.getAjaxDisplays = function(rpi_mac, callback) {
     var self = this;
     $.get('/displays/' + encodeURIComponent(rpi_mac),
         function(data) {
-            interface.cleanup();
+            self.cleanup();
             $('#displays_container').html(data);
             // construct object instances for data binds
             if ('data_bindings' in window) {
@@ -120,10 +120,12 @@ Interface.prototype.getAjaxDisplays = function(rpi_mac, callback) {
 };
 
 Interface.prototype.cleanup = function() {
+
     if ('data_bindings' in window) {
-        for (var key in data_bindings) {
-            for (var type in data_bindings[key]) {
-                for (var instance_index in data_bindings[key][type].instances) {
+        var instance_index, type, key;
+        for (key in data_bindings) {
+            for (type in data_bindings[key]) {
+                for ( instance_index in data_bindings[key][type].instances) {
                     if (data_bindings[key][type].instances[instance_index].close) {
                         data_bindings[key][type].instances[instance_index].close();
                     }
